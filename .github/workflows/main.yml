@@ -1,0 +1,35 @@
+name: SmartBudget CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - master
+      - develop
+  pull_request:
+    branches:
+      - main
+      - master
+      - develop
+
+jobs:
+  testiranje-i-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Preuzimanje koda
+        uses: actions/checkout@v4
+
+      - name: Podesavanje Node.js okruzenja
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Instalacija zavisnosti
+        run: npm install --legacy-peer-deps
+
+      - name: Pokretanje automatizovanih testova
+        run: npm run test
+        
+      - name: Testiranje Docker Build-a
+        run: docker compose build

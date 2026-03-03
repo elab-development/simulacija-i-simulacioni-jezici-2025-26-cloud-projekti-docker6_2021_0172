@@ -1,0 +1,82 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  name      String
+  role      String   @default("USER")
+  isBlocked Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  wallets      Wallet[]
+  categories   Category[]
+  transactions Transaction[]
+  budgets      Budget[]
+}
+
+model Wallet {
+  id       Int     @id @default(autoincrement())
+  name     String
+  balance  Decimal @default(0)
+  currency String  @default("RSD")
+
+  userId       Int
+  user         User          @relation(fields: [userId], references: [id])
+  transactions Transaction[]
+}
+
+model Category {
+  id       Int     @id @default(autoincrement())
+  name     String
+  type     String
+  isSystem Boolean @default(false)
+
+  userId Int?
+  user   User? @relation(fields: [userId], references: [id])
+
+  transactions Transaction[]
+  budgets      Budget[]
+}
+
+model Transaction {
+  id          Int      @id @default(autoincrement())
+  amount      Decimal
+  type        String
+  date        DateTime @default(now())
+  description String?
+
+  walletId Int
+  wallet   Wallet @relation(fields: [walletId], references: [id], onDelete: Cascade)
+
+  categoryId Int
+  category   Category @relation(fields: [categoryId], references: [id])
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+}
+
+model Budget {
+  id     Int     @id @default(autoincrement())
+  amount Decimal
+  period String
+
+  categoryId Int?
+  category   Category? @relation(fields: [categoryId], references: [id])
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}

@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  # 1. Podasavanja servisa za bazu
+  database:
+    image: mysql:8.0
+    container_name: smartbudget_db
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: smartbudget
+    ports:
+      - "3307:3306"
+    # Koriscenje trajne memotije kako se podaci ne bi brisali svaki put pri gasenju
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - smartbudget_network
+
+  # 2. Podesavanje servisa za aplikaciju
+  app:
+    build: .
+    container_name: smartbudget_app
+    ports:
+      - "3000:3000"
+    # Preko ovog bloka prosledjujemo database url varijablu
+    environment:
+      - DATABASE_URL=mysql://root:admin@database:3306/smartbudget
+    # Docker ce prvo upaliti bazu i nju cekati pa zatim tek aplikaciju
+    depends_on:
+      - database
+    networks:
+      - smartbudget_network
+
+# Definisanje Docker mreze da bi app i db mogli da komuniciraju
+networks:
+  smartbudget_network:
+    driver: bridge
+
+# Definisanje trajnog skladista za bazu
+volumes:
+  mysql_data:
