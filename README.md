@@ -23,5 +23,5 @@ Da biste pokrenuli projekat na svom računaru, pratite sledeće korake:
 git clone [https://github.com/elab-development/internet-tehnologije-2025-smartbudget_2021_0100.git](https://github.com/elab-development/internet-tehnologije-2025-smartbudget_2021_0100.git)
 cd internet-tehnologije-2025-smartbudget_2021_0100
 
-Autori: Miloš Purić 2021/0100
+Autori: Katarina Vujičić 2021/0168
         Jovan Janjušević 2021/0172

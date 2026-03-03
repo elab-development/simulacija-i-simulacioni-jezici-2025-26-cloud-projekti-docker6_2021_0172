@@ -107,7 +107,7 @@ export default function Footer() {
             <h3 className="text-white font-bold text-lg mb-4">Studenti</h3>
             <div className="text-sm space-y-1 text-gray-500">
               <p>Jovan Janjušević <span className="text-gray-600">(2021/0172)</span></p>
-              <p>Miloš Purić <span className="text-gray-600">(2021/0100)</span></p>
+              <p>Katarina Vujičić <span className="text-gray-600">(2021/0168)</span></p>
               <p className="mt-4 text-blue-400">Fakultet Organizacionih Nauka</p>
             </div>
           </div>
